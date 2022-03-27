@@ -5,18 +5,38 @@
         <div class="card-body">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="50"
-            height="50"
+            width="60"
+            height="60"
             fill="currentColor"
-            class="bi bi-person-fill my-0"
+            class="bi bi-person-bounding-box"
             viewBox="0 0 16 16"
           >
             <path
-              d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"
+              d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"
+            />
+            <path
+              d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"
             />
           </svg>
           <!-- <h1 class="h3 mb-3 fw-normal card-title">Login</h1> -->
-          <form @submit.stop.prevent="submit" class="col-md-12 py-5">
+          <form @submit.stop.prevent="Onsubmit" class="col-md-12 py-5">
+            <div
+              class="
+                d-flex
+                justify-content-center
+                input-group input-group-md
+                mb-4
+              "
+            >
+              <input
+                v-model="form.name"
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Nome Completo"
+                required
+              />
+            </div>
             <div
               class="
                 d-flex
@@ -29,7 +49,7 @@
                 v-model="form.email"
                 type="text"
                 class="form-control"
-                id="floatingInput"
+                id="email"
                 placeholder="E-mail"
                 required
               />
@@ -52,10 +72,10 @@
               />
             </div>
             <button class="w-100 btn btn-lg btn-primary" type="submit">
-              Entrar
+              Cadastrar
             </button>
           </form>
-            <router-link to="/register" replace class="link"> Cadastar Usuário</router-link>
+          <router-link to="/" replace class="link">Fazer Login</router-link>
         </div>
       </div>
     </div>
@@ -63,39 +83,31 @@
 </template>
 
 <script>
-// @ is an alias to /src
-
 import { mapActions } from "vuex";
 export default {
-  name: "Home",
-  components: {},
   data() {
     return {
       form: {
+        name: "",
         email: "",
         password: "",
       },
     };
   },
   methods: {
-    ...mapActions("auth", {
-      login: "login",
+    ...mapActions("user", {
+         createUser: 'createUser'
     }),
-    submit() {
-      this.login(this.form).then(() => { console.log('entrou') });
-    },
-  },
+    Onsubmit(){
+        this.createUser(this.form).then(() => { this.$routes.push('/') });
+    }
+  }
 };
 </script>
-<style scoped>
+
+<style>
 .ini {
   height: 100vh;
   align-items: center;
-}
-.link {
-  text-decoration: none;
-  font-size: 15px;
-  /* color: #080808; */
-  font-weight: 700;
 }
 </style>

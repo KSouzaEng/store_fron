@@ -1,4 +1,5 @@
     import axios  from "axios";
+    import router from '@/router'
 
     export default {
       namespaced: true,
@@ -26,7 +27,14 @@
       actions: {
         async login({ dispatch }, credentials) {
           let response = await axios.post("/login", credentials);
-        //   console.log(response.data)
+      
+          if(!response.data.access_token){
+           router.push('/')
+          }else{
+              console.log('nasjdbhsdb')
+              localStorage.setItem('token',response.data.access_token)
+             router.push('/dashboard')
+          }
           dispatch("attempt", response.data.access_token);
         },
 
@@ -53,5 +61,27 @@
             commit("SET_USER", null);
           }
         },
+        async logout({commit}){
+
+          // return axios.post("logout").then(() => {
+          //   localStorage.removeItem('token')
+          //   commit("SET_TOKEN", null);
+          //   commit("SET_USER", null);
+          // });
+          let token = localStorage.getItem('token')
+          return axios({
+            url: '/logout',
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',Authorization: 'Bearer ' + token},
+          }).then( () => {
+            localStorage.removeItem('token')
+              commit("SET_TOKEN", null);
+              commit("SET_USER", null);
+              router.push('/')
+          }).catch( e => {
+            console.log(e)
+          })
+        }
+        
       },
     };
