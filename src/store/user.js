@@ -68,7 +68,40 @@ export default {
                 commit("SET_TOKEN", null);
                 commit("SET_USER", null);
               }
+        },
+
+        async updateUser({commit,state}, information){
+          
+          console.log('Atualizar',information)
+          try {
+            let response = await axios.put(`/user/update/${state.user.id}`,{
+
+              'name':information.name,
+              'email': information.email,
+              'password': information.password
+            })
+            console.log('response registrer', response, 'end response registrer',state.user.id)
+  
+          } catch (error) {
+            console.log('error', error)
+            commit('SET_IS_SAVED', false)
+          }
+      },
+      async deleteUser({state}){
+
+       try {
+          
+          let response = await axios.delete(`delete/user/${state.user.id}`)
+  
+               console.log('delete')
+               localStorage.removeItem('token')
+           
+          console.log(response)
+        } catch (error) {
+          console.log('error', error)
+
         }
 
       }
+    }
 }

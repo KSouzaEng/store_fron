@@ -36,7 +36,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse " id="navbarNavDarkDropdown">
-        <ul class="navbar-nav  ml-auto">
+        <ul class="navbar-nav">
           <li class="nav-item dropdown ">
             <a
               class="nav-link dropdown-toggle "
@@ -65,7 +65,7 @@
               class="dropdown-menu"
               aria-labelledby="navbarDarkDropdownMenuLink"
             >
-              <li ><a class="dropdown-item" href="#">Perfil</a></li>
+              <li > <router-link to="/about" replace class="link dropdown-item">Perfil</router-link></li>
               <li>
                 <form class="d-inline-flex" @submit.stop.prevent="sair">
                   <button class="btn btn-link" type="submit">Sair</button>
@@ -80,29 +80,21 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions} from "vuex";
 export default {
-  computed: {
-    ...mapState("user", {
-      user: "user",
-    }),
-  },
+
   methods: {
     ...mapActions("auth", {
       logout: "logout",
     }),
-    ...mapActions("user", {
-      getUser: "getUser",
-    }),
+  
     sair() {
       this.logout().then(() => {
         console.log("saiu");
       });
     },
   },
-  created() {
-    this.getUser();
-  },
+ 
 };
 </script>
 
@@ -115,7 +107,7 @@ export default {
 .navbar-brand.abs
     {
         position: relative;
-        width: 100%;
+        width: 90%;
         left: 0;
         text-align: center;
     }

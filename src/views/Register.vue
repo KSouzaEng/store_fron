@@ -84,6 +84,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -96,12 +97,22 @@ export default {
   },
   methods: {
     ...mapActions("user", {
-         createUser: 'createUser'
+      createUser: "createUser",
     }),
-    Onsubmit(){
-        this.createUser(this.form).then(() => { this.$routes.push('/') });
-    }
-  }
+    Onsubmit() {
+      this.createUser(this.form).then(() => {
+        swal.fire({
+          position: "bottom-center",
+          icon: "success",
+          title: "Usuário cadastrado",
+          showConfirmButton: false,
+          timer: 1900,
+        });
+
+        this.$router.push("/");
+      });
+    },
+  },
 };
 </script>
 
