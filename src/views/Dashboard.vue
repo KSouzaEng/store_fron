@@ -31,7 +31,7 @@
                 data-bs-parent="#accordionExample"
               >
                 <div class="accordion-body">
-                  <form>
+                  <form  @submit.stop.prevent="Onsubmit">
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <input
@@ -75,7 +75,7 @@
                       </div>
                       <div class="col-md-6">
                         <select
-                          v-model="form.tipo_cliente"
+                          v-model="form.tipo_pessoa"
                           class="form-select"
                           aria-label="Default select example"
                         >
@@ -87,7 +87,7 @@
                         </select>
                       </div>
                       <div class="col-md-6">
-                        <input class="form-control" type="file" id="formFile" />
+                        <input class="form-control" type="file" id="formFile"  />
                       </div>
 
                       <div
@@ -96,7 +96,7 @@
                         <button
                           class="btn btn-primary me-md-2"
                           type="button"
-                          @click="update()"
+                          @click="Onsubmit()"
                         >
                           Cadastrar Informações
                         </button>
@@ -115,6 +115,8 @@
 
 <script>
 import Navbar from "../components/NavBar";
+import { mapActions } from "vuex";
+import swal from 'sweetalert2'
 export default {
   components: {
     Navbar,
@@ -127,12 +129,32 @@ export default {
             telefone1: "",
             telefone2: "",
             tipo_cliente: "",
-            imagem: "",
+            imagem: [],
         }
     }
    },
 
-  methods: {},
+  methods: {
+        ...mapActions("cliente", {
+      createClient: "createClient",
+    }),
+    Onsubmit(){
+        var file = document.querySelector("input[type=file]").files[0];
+        this.form.imagem = file
+        console.log(this.form)
+        this.createClient(this.form).then(response => {
+        swal.fire({
+          position: "bottom-center",
+          icon: "success",
+          title: "Usuário cadastrado",
+          showConfirmButton: false,
+          timer: 1900,
+        });
+        console.log(response)
+       
+      });
+    }
+  },
 };
 </script>
 
